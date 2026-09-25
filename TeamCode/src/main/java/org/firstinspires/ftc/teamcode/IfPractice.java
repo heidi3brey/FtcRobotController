@@ -2,9 +2,10 @@ package org.firstinspires.ftc.teamcode;
 
 import androidx.annotation.VisibleForTesting;
 
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
-
+@Disabled
 @TeleOp
 public class IfPractice extends OpMode {
     @Override
