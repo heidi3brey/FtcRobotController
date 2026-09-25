@@ -1,6 +1,4 @@
-package org.firstinspires.ftc.teamcode;
-
-import androidx.annotation.VisibleForTesting;
+package org.firstinspires.ftc.teamcode.tutorials;
 
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
