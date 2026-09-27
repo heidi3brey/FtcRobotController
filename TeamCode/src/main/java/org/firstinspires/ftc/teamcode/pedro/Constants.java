@@ -25,9 +25,9 @@ public class Constants {
     public static Follower create(HardwareMap h) {
         // return new Follower(Drivetrain, Localizer, Foresight);
         return new Follower(
-                new PinpointLocalizer(hardwareMap, localizerConfig),
-                new Mecanum(hardwareMap, drivetrainConfig),
-                new Foresight(foresightConfig)
+                new PinpointLocalizer(h, Constants.localizerConfig),
+                new Mecanum(h, Constants.drivetrainConfig),
+                new Foresight(Constants.foresightConfig)
         );
     }
     public static MecanumConfig drivetrainConfig = new MecanumConfig(c -> {
