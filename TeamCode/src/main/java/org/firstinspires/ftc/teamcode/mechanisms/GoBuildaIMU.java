@@ -7,7 +7,7 @@ import com.qualcomm.robotcore.hardware.IMU;
 public class GoBuildaIMU {
     private IMU imu;
     public void init(HardwareMap hwMap){
-        imu = hwMap.get(IMU.class,"imu2"); //imu2 matches driver hub config
+        imu = hwMap.get(IMU.class,"pinpoint"); //pinPoint matches driver hub config
 
         IMU.Parameters parameters = new IMU.Parameters(
                 new RevHubOrientationOnRobot(

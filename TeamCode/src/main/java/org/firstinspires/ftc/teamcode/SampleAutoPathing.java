@@ -1,57 +1,50 @@
 package org.firstinspires.ftc.teamcode;
 
+import com.pedropathing.api.Paths;
+import com.pedropathing.api.PoseFactory;
 import com.pedropathing.follower.Follower;
 import com.pedropathing.math.Pose;
+import com.pedropathing.paths.Path;
+import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
+import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
 //import java.util.Timer;
 import com.pedropathing.utils.Timer;
 
-@TeleOp
-public class SampleAutoPathing extends OpMode {
+import org.firstinspires.ftc.teamcode.pedro.Constants;
+
+import java.nio.channels.ClosedByInterruptException;
+@Disabled
+@Autonomous(name = "Sample Pedro AutoHeidi")
+public class SampleAutoPathing extends LinearOpMode {
     private Follower follower;
-    private Timer pathTimer, opModeTimer;
 
-    public  enum PathState{
-        // start position to end position
-        // drive - movmeent state
-        // shoot - attempt to score pollin/nector
-        Drive_STARTPOS_SHOOT_POS,
-        SHOOT_PRELOAD
-    }
-    PathState pathState;
+    @Override
+    public void runOpMode() {
+        telemetry.addData("Status", "Initializing...");
+        telemetry.update();
+        follower = Constants.create(hardwareMap);
 
-    //private final Pose startPose = Pose[];// x, y, heading in radians
-    //private final Pose shootPose = Pose[];
+        PoseFactory p = PoseFactory.degrees();
+        Pose start = p.of(24,24,0);
+        Pose end = p.of(48, 24,0);
 
-    /*
-    video how to write ftc auto programs for pedropathing
+        Path line = Paths.line(start,end);
+        line = line.constant(start);
 
-    private PathChain driveStartPosShootPose;
-    public void buildPaths[]{
-            //put in coordinate for starting pose > ending pose
-        driveStartPosShootPose = follower.pathBuilder()
-                .addPath(BezierLine(startPose,shootPose))
+        follower.setPose(start);
+        telemetry.addLine("Ready Ready");
+        telemetry.update();
+        waitForStart();
 
-    }
+        follower.follow(line);
 
-
-
-    public void statePathUpdate(){
-        switch (pathState){
-            case Drive_STARTPOS_SHOOT_POS:
-                follower.follwPath(drive...)
+        while (opModeIsActive() && follower.isBusy()){
+            follower.update();
         }
-    }
-        */
-    @Override
-    public void init() {
-
-    }
-
-    @Override
-    public void loop() {
-
+        requestOpModeStop();
     }
 }
