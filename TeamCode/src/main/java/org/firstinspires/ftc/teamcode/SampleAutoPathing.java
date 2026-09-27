@@ -22,8 +22,8 @@ public class SampleAutoPathing extends OpMode {
     }
     PathState pathState;
 
-    private final Pose startPose = Pose[];// x, y, heading in radians
-    private final Pose shootPose = Pose[];
+    //private final Pose startPose = Pose[];// x, y, heading in radians
+    //private final Pose shootPose = Pose[];
 
     /*
     video how to write ftc auto programs for pedropathing
