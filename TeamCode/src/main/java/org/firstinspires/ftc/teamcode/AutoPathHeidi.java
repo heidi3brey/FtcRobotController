@@ -28,9 +28,11 @@ public class AutoPathHeidi extends LinearOpMode {
 
     private final PoseFactory poseFactory = PoseFactory.degrees();
 
-    private final Pose start = poseFactory.of(58.6963, 6.7038, 90);
-    private final Pose point1 = poseFactory.of(59.9685, 114.9741, -90.6732);
-    private final Pose point2 = poseFactory.of(12.5019, 116.8574, -2.2721);
+    private final Pose start = poseFactory.of(0, 0, -90);
+    //private final Pose point1 = poseFactory.of(59.9685, 114.9741, -90.6732);
+    private final Pose point1 = poseFactory.of(10, 10, -90);
+    // private final Pose point2 = poseFactory.of(12.5019, 116.8574, -2.2721);
+    private final Pose point2 = poseFactory.of(-5.1, -5.1, -90);
 
     // Autonomous routine
 
