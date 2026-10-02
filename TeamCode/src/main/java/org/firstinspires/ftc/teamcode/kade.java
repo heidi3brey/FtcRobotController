@@ -2,6 +2,7 @@ package org.firstinspires.ftc.teamcode;
 
 import static com.pedropathing.api.Paths.*;
 
+import com.pedropathing.api.Paths;
 import com.pedropathing.api.PoseFactory;
 import com.pedropathing.follower.Follower;
 import com.pedropathing.math.Pose;
@@ -21,19 +22,19 @@ import com.qualcomm.robotcore.robocol.Command;
 import org.firstinspires.ftc.teamcode.pedro.Constants;
 import org.firstinspires.ftc.teamcode.pedro.Tuning;
 
-@Autonomous(name = "AutoPathHeidi", group = "Autonomous")
-public class AutoPathHeidi extends LinearOpMode {
+@Autonomous(name = "kade", group = "Autonomous")
+public class kade extends LinearOpMode {
 
     private Follower follower;
 
     private final PoseFactory poseFactory = PoseFactory.degrees();
 
-    private final Pose start = poseFactory.of(56, 8, 90);
+    private final Pose start = poseFactory.of(56,8, 90);
     //private final Pose point1 = poseFactory.of(59.9685, 114.9741, -90.6732);
-    private final Pose point1 = poseFactory.of(13, 95, 90);
+    private final Pose point1 = poseFactory.of(33.43886, 19.9205, 180);
     // private final Pose point2 = poseFactory.of(12.5019, 116.8574, -2.2721);
-    private final Pose point2 = poseFactory.of(13, 95, 360);
-
+    private final Pose point2 = poseFactory.of(35.5256, 106.6278, 91.3457);
+    private final Pose point3 = poseFactory.of(11.5455, 106.7173, -0.2138);
 
     // Autonomous routine
 
@@ -73,13 +74,16 @@ public class AutoPathHeidi extends LinearOpMode {
     }
 
     public Path path1() {
-        return line(start, point1).reverseTangent();
+        return Paths.line(start, point1).linear(start, point1);
     }
 
     public Path path2() {
-        return line(point1, point2).reverseTangent();
+        return Paths.line(point1, point2).reverseTangent();
     }
 
+    public Path path3() {
+        return Paths.line(point2, point3).reverseTangent();
+    }
     public void telemetryDebug(){
         telemetry.addData("x", follower.pose().x());
         telemetry.addData("y", follower.pose().y());
