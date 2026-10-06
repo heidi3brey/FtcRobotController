@@ -21,8 +21,8 @@ import com.qualcomm.robotcore.robocol.Command;
 import org.firstinspires.ftc.teamcode.pedro.Constants;
 import org.firstinspires.ftc.teamcode.pedro.Tuning;
 
-@Autonomous(name = "AutoPathHeidi", group = "Autonomous")
-public class AutoPathHeidi extends LinearOpMode {
+@Autonomous(name = "Green", group = "Autonomous")
+public class Green extends LinearOpMode {
 
     private Follower follower;
 
@@ -30,15 +30,12 @@ public class AutoPathHeidi extends LinearOpMode {
 
     private final Pose start = poseFactory.of(56, 8, 90);
     //private final Pose point1 = poseFactory.of(59.9685, 114.9741, -90.6732);
-    private final Pose point1 = poseFactory.of(10, 8, 90);
+    private final Pose point1 = poseFactory.of(60, 36, 90);
     // private final Pose point2 = poseFactory.of(12.5019, 116.8574, -2.2721);
-    private final Pose point2 = poseFactory.of(31, 104, 90);
+    private final Pose point2 = poseFactory.of(60, 107, 90);
 
-    private final Pose point3 = poseFactory.of(60, 104, 90);
+    private final Pose point3 = poseFactory.of(13.2, 124, 90);
 
-    private final Pose point4 = poseFactory.of(62, 127, 90);
-
-    private final Pose point5 = poseFactory.of(20.17, 123.68, 90);
 
 
     // Autonomous routine
@@ -83,19 +80,7 @@ public class AutoPathHeidi extends LinearOpMode {
             follower.update();
             telemetryDebug(); // adds real-time debugging updates here
         }
-        // Execute the fourth path and wait for it to finish
-        follower.follow(path4());
-        while (opModeIsActive() && follower.isBusy()) {
-            follower.update();
-            telemetryDebug(); // adds real-time debugging updates here
-        }
-        // TO DO shoot 2nd time
-        // Execute the fifth path and wait for it to finish
-        follower.follow(path5());
-        while (opModeIsActive() && follower.isBusy()) {
-            follower.update();
-            telemetryDebug(); // adds real-time debugging updates here
-        }
+
 
     }
 
@@ -107,14 +92,9 @@ public class AutoPathHeidi extends LinearOpMode {
         return line(point1, point2).facingPoint(point2);//.reverseTangent();
     }
     public Path path3() {
-        return line(point2, point3).facingPoint(point3);//.reverseTangent();
+        return line(point2, point3).reverseTangent();
     }
-    public Path path4() {
-        return line(point3, point4).reverseTangent();
-    }
-    public Path path5() {
-        return line(point4, point5).reverseTangent();
-    }
+
 
     public void telemetryDebug(){
         telemetry.addData("x", follower.pose().x());
