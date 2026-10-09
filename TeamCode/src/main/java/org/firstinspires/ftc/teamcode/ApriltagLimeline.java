@@ -1,5 +1,7 @@
 package org.firstinspires.ftc.teamcode;
 
+import com.qualcomm.hardware.gobilda.GoBildaPinpointDriver;
+
 import com.qualcomm.hardware.limelightvision.LLResult;
 import com.qualcomm.hardware.limelightvision.Limelight3A;
 import com.qualcomm.hardware.rev.RevHubOrientationOnRobot;
@@ -9,20 +11,22 @@ import com.qualcomm.robotcore.hardware.IMU;
 
 import org.firstinspires.ftc.robotcore.external.navigation.Pose3D;
 import org.firstinspires.ftc.robotcore.external.navigation.YawPitchRollAngles;
+//import com.qualcomm.hardware.gobilda.GoBildaPinpointDriverParameters;
 
 @Autonomous
 public class ApriltagLimeline extends OpMode {
 
     private Limelight3A limelight;
-    private IMU imu;
+    private GoBildaPinpointDriver imu;
     @Override
     public void init() {
         limelight=hardwareMap.get(Limelight3A.class, "limeLight");
         limelight.pipelineSwitch( 0); //change piplineSwitch. April tag 34,35,36,37
-        imu = hardwareMap.get(IMU.class, "pinpoint");
-        RevHubOrientationOnRobot revHubOrientationOnRobot = new RevHubOrientationOnRobot(RevHubOrientationOnRobot.LogoFacingDirection.UP
+        imu = hardwareMap.get(GoBildaPinpointDriver.class, "pinpoint");
+        RevHubOrientationOnRobot revHubOrientationOnRobot = new RevHubOrientationOnRobot(
+                RevHubOrientationOnRobot.LogoFacingDirection.UP,
                 RevHubOrientationOnRobot.UsbFacingDirection. FORWARD);
-        imu.initialize(new IMU.Parameters(revHubOrientationOnRobot));
+        //imu.initialize(new GoBildaPinpointDriver.Parameters(revHubOrientationOnRobot);
     }
 
     @Override
@@ -32,14 +36,16 @@ public class ApriltagLimeline extends OpMode {
 
     @Override
     public void loop() {
-        YawPitchRollAngles orientation = imu.getRobotYawPitchRollAngles();
-        limelight.updateRobotOrientation(orientation.getYaw());
+        imu.update();
+        //YawPitchRollAngles orientation = imu.getRobotYawPitchRollAngles();
+        //limelight.updateRobotOrientation(orientation.getYaw());
         LLResult llResult = limelight.getLatestResult();
         if (llResult != null && llResult.isValid()) {
             Pose3D botPose = llResult.getBotpose_MT2();
             telemetry.addData("Tx", llResult.getTx());
             telemetry.addData("Ty", llResult.getTy());
             telemetry.addData("Ta", llResult.getTa());
+            //telemetry.addData("ID Tag", llResult.getID);
         }
         else{
             telemetry.addLine("None Found");
