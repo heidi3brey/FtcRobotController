@@ -1,8 +1,9 @@
 package org.firstinspires.ftc.teamcode.mechanisms;
 
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
-
+@Disabled
 public class Shooter {
 
     private DcMotor shooterMotor;
@@ -19,11 +20,11 @@ public class Shooter {
     public void spinUp() {
         shooterMotor.setPower(1.0);
     }
-
+/*
     public boolean atSpeed() {
         return shooterMotor.getVelocity() > 1500; // adjust for your robot
     }
-
+*/
     public void feed() {
         feederMotor.setPower(1.0);
     }

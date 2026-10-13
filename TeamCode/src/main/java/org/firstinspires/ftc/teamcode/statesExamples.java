@@ -164,10 +164,11 @@ public class statesExamples extends OpMode {
 
             case SHOOT:
                 shooter.spinUp();
+                /*
                 if (shooter.atSpeed()) {
                     shooter.feed();
                     currentState = RobotState.IDLE;
-                }
+                }*/
                 break;
 
             case PICK_UP:
