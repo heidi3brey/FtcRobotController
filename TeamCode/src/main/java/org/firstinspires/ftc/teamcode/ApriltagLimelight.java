@@ -96,13 +96,13 @@ public class ApriltagLimelight extends OpMode {
             */
         } else {
             telemetry.addLine("No tags detected");
-            telemetry.addLine("Grant, Kade, and Walker are awesome");
+            telemetry.addLine("Grant, Warby, and Walker are awesome");
             telemetry.addLine("System Failed :(");
             telemetry.addLine("Self Destruct In");
             telemetry.addLine("3");
             telemetry.addLine("2");
             telemetry.addLine("1");
-            telemetry.addLine("Error Self Destruct Failed");
+            telemetry.addLine("Error: Self Destruct Failed");
         }
         }
 
