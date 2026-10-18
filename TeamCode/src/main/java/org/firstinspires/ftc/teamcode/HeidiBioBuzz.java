@@ -228,9 +228,7 @@ public class HeidiBioBuzz extends OpMode {
                     "Tags Seen",
                     tagsSeen.toString());
 
-            telemetry.addData(
-                    "Tag Count",
-                    result.getFiducialResults().size());
+            telemetry.addData("Tag Count", result.getFiducialResults().size());
 
             telemetry.addData(
                     "Tx",
