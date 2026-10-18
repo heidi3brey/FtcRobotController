@@ -31,6 +31,7 @@ public class Constants {
         );
     }
     public static MecanumConfig drivetrainConfig = new MecanumConfig(c -> {
+        //hardware config
         c.frontLeftName.set("leftFront");
         c.frontRightName.set("rightFront");
         c.backLeftName.set("leftBack");

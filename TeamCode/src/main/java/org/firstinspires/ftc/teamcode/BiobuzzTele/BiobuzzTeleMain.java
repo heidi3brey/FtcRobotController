@@ -2,215 +2,139 @@ package org.firstinspires.ftc.teamcode.BiobuzzTele;
 
 import com.pedropathing.follower.Follower;
 import com.pedropathing.math.Pose;
-import com.pedropathing.revhub.localizers.PinpointLocalizer;
 import com.qualcomm.hardware.limelightvision.LLResult;
 import com.qualcomm.hardware.limelightvision.LLResultTypes;
 import com.qualcomm.hardware.limelightvision.Limelight3A;
-import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
-import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.HardwareMap;
 
+import org.firstinspires.ftc.teamcode.BiobuzzAuto.AutoState;
 import org.firstinspires.ftc.teamcode.pedro.Constants;
+@Disabled
 @TeleOp(name="BiobuzzTeleMain")
 public class BiobuzzTeleMain extends OpMode{
-    private DcMotor lb;
-    private DcMotor lf;
-    private DcMotor rf;
-    private DcMotor rb;
-    private PinpointLocalizer localizer;
+
+    // --------------------------
+    // Field Coordinates
+    // --------------------------
+    private static final double RED_BASKET_X = 48.0;
+    private static final double RED_BASKET_Y = 48.0;
+
+    private static final double BLUE_BASKET_X = -48.0;
+    private static final double BLUE_BASKET_Y = 48.0;
     private Follower follower;
     private Limelight3A limelight;
-    private String alliance;
+    private String alliance = "unknown";
     @Override
     public void init(){
-        //    Motors
-        lb = hardwareMap.get(DcMotor.class,"leftBack");
-        rb = hardwareMap.get(DcMotor.class,"rightBack");
-        lf = hardwareMap.get(DcMotor.class,"leftFront");
-        rf = hardwareMap.get(DcMotor.class,"rightFront");
-        // Localizer
-        localizer = new PinpointLocalizer(hardwareMap, Constants.localizerConfig);
         // Follower
+        // creates new field with robot at (0,0,0) by default
         follower = Constants.create(hardwareMap);
-        //  Limelight
-        limelight = hardwareMap.get(Limelight3A.class,"limeLight");
-        limelight.pipelineSwitch(0);
-        alliance = "red";
-        telemetry.addLine("biobuzz telyop ready");
-        telemetry.addData("Allince",alliance);
+        //change to last location from auto
+        follower.setPose(AutoState.lastPose);
 
-        double fl = 0;
+        //get alliance from auto
+        alliance = AutoState.alliance;
+
+        //  Limelight setup based on alliance
+        limelight = hardwareMap.get(Limelight3A.class,"limeLight");
+        if (alliance.equals("red")){
+            limelight.pipelineSwitch(0);
+        } else if (alliance.equals("blue")) {
+            limelight.pipelineSwitch(1);
+        }
+
+        telemetry.addData("Alliance", alliance);
+
+        telemetry.addData(
+                "Stored X",
+                AutoState.lastPose.x());
+
+        telemetry.addData(
+                "Stored Y",
+                AutoState.lastPose.y());
+
+        telemetry.addData(
+                "Stored Heading",
+                Math.toDegrees(
+                        AutoState.lastPose.heading()));
+
+        telemetry.addLine("biobuzz telyop ready");
 
         telemetry.update();
     }
     @Override
     public void start(){
         limelight.start();
-
     }
 
     @Override
-    public void loop(){
-        localizer.update();
+    public void loop() {
+
         follower.update();
+
         Pose pose = follower.pose();
 
         double forward = -gamepad1.left_stick_y;
         double strafe = gamepad1.left_stick_x;
         double rotate = gamepad1.right_stick_x;
-        double rotateAuto = 0;
 
-        telemetry.addData("forward",forward);
-        telemetry.addData("rotate",forward);
-        telemetry.addData("strafe",forward);
-    // -------------------
-        if (alliance.equals("Red")) {
-             forward = -gamepad1.left_stick_y;
-             strafe = gamepad1.left_stick_x;
-        }
-        else if (alliance.equals("Blue")){
-             forward = gamepad1.left_stick_y;
-             strafe = -gamepad1.left_stick_x;
-        }
-        else {
-            telemetry.addLine("not on red or blue team... pick one");
-        }
-        // ------------------------------------------------
-        // Field Centric Using Pedro Heading
-        // ------------------------------------------------
-        double heading = pose.heading();//.getHeading();
+        double targetX;
+        double targetY;
 
-        double cosA = Math.cos(heading);
-        double sinA = Math.sin(heading);
-
-        double fieldForward =
-                forward * cosA -
-                        strafe * sinA;
-
-        double fieldStrafe =
-                forward * sinA +
-                        strafe * cosA;
-
-        // ------------------------------------------------
-        // Mecanum Wheel Math
-        // ------------------------------------------------
-        //user driving
-        double fl =
-                fieldForward +
-                        fieldStrafe +
-                        rotate;
-
-        double fr =
-                fieldForward -
-                        fieldStrafe -
-                        rotate;
-
-        double bl =
-                fieldForward -
-                        fieldStrafe +
-                        rotate;
-
-        double br =
-                fieldForward +
-                        fieldStrafe -
-                        rotate;
-        if(gamepad1.b){
-            //auto rotate
-            fl =
-                    fieldForward +
-                            fieldStrafe +
-                            rotateAuto;
-
-            fr =
-                    fieldForward -
-                            fieldStrafe -
-                            rotateAuto;
-
-            bl =
-                    fieldForward -
-                            fieldStrafe +
-                            rotateAuto;
-
-            br =
-                    fieldForward +
-                            fieldStrafe -
-                            rotateAuto;
+        if(alliance.equalsIgnoreCase("red")) {
+            targetX = RED_BASKET_X;
+            targetY = RED_BASKET_Y;
+        } else {
+            targetX = BLUE_BASKET_X;
+            targetY = BLUE_BASKET_Y;
         }
 
+        if (gamepad1.right_stick_button) {
 
-        double max =
-                Math.max(
-                        1.0,
-                        Math.max(
-                                Math.abs(fl),
-                                Math.max(
-                                        Math.abs(fr),
-                                        Math.max(
-                                                Math.abs(bl),
-                                                Math.abs(br)))));
+            double desiredHeading =
+                    Math.atan2(
+                            targetY - pose.y(),
+                            targetX - pose.x());
 
-        fl /= max;
-        fr /= max;
-        bl /= max;
-        br /= max;
-
-        // ------------------------------------------------
-        // Send Motor Powers
-        // ------------------------------------------------
-        lf.setPower(fl);
-        rf.setPower(fr);
-        lb.setPower(bl);
-        rb.setPower(br);
-        //-------------------------------------------------
-        //Limelight
-        //-------------------------------------------------
-        LLResult result = limelight.getLatestResult();
-
-
-        // ------------------------------------------------
-        // Telemetry
-        // ------------------------------------------------
-        telemetry.addLine("=== BioBuzz TeleOp ===");
-
-        telemetry.addData("Alliance", alliance);
-
-        telemetry.addData("X", pose.x()); //.getX());
-        telemetry.addData("Y", pose.y()); //getY());
-        telemetry.addData("Heading", pose.heading()); //getHeading());
-        if (result != null && result.isValid()){
-            StringBuilder tagsSeen = new StringBuilder();
-            for (LLResultTypes.FiducialResult tag: result.getFiducialResults()){
-                if (tagsSeen.length()>0){
-                    tagsSeen.append(", ");
-                }
-                tagsSeen.append(tag.getFiducialId());
-            }
-            telemetry.addData("Tags Seen",tagsSeen.toString());
-            telemetry.addData("Tag Count",result.getFiducialResults().size());
-            telemetry.addData("Tx",result.getTx());
-            telemetry.addData("Ty",result.getTy());
-            telemetry.addData("Ta",result.getTa());
-        }
-        else {
-            telemetry.addLine("No Tags Seen :(");
-        }
-
-        // Auto Aim
-        double basketY = 48;
-        double basketX = 48;
-        double kP = .5;
-        if (gamepad1.b){
-           // Pose pose = follower.pose();
-            double desiredHeading = Math.atan2(basketY - pose.y(), basketX - pose.x());
-            telemetry.addData("desiredHeading",desiredHeading);
             double error = desiredHeading - pose.heading();
-            rotateAuto = error * kP;
-            //follower.setHeading(desiredHeading);
 
+            while (error > Math.PI) {
+                error -= 2.0 * Math.PI;
+            }
+
+            while (error < -Math.PI) {
+                error += 2.0 * Math.PI;
+            }
+
+            if (Math.abs(error) < Math.toRadians(2)) {
+                rotate = 0;
+            } else {
+                rotate = error * 0.5;
+
+                rotate = Math.max(
+                        -0.6,
+                        Math.min(0.6, rotate)
+                );
+            }
+
+            telemetry.addData("Target X", targetX);
+            telemetry.addData("Target Y", targetY);
+            telemetry.addData("Desired Heading", desiredHeading);
+            telemetry.addData("Turn Error", Math.toDegrees(error));
+            telemetry.addData("Rotate Cmd", rotate);
+            telemetry.addData(
+                    "Heading Deg",
+                    Math.toDegrees(pose.heading())
+            );
         }
+
         follower.manual(forward,strafe,rotate);
+
+        telemetry.addData("X", pose.x());
+        telemetry.addData("Y", pose.y());
+        telemetry.addData("Heading", pose.heading());
 
         telemetry.update();
     }
