@@ -77,11 +77,26 @@ public class BiobuzzTeleMain extends OpMode{
         Pose pose = follower.pose();
 
         double forward = -gamepad1.left_stick_y;
-        double strafe = gamepad1.left_stick_x;
+        double strafe = -gamepad1.left_stick_x;
         double rotate = gamepad1.right_stick_x;
 
         double targetX;
         double targetY;
+        // Fienld-centric trasnsform
+        double heading = pose.heading() - Math.PI / 2.0;
+  // add 90 degers to change side! :)
+        // Opional alliance adjustment
+        if (alliance.equalsIgnoreCase("red")) {
+            heading += Math.PI;
+// add pickup control hub! new bot!
+            //add shootBang
+            //add spiner
+        }
+
+        double tempForward = forward * Math.cos(-heading) - strafe * Math.sin(-heading);
+        double tempStrafe = forward * Math.sin(-heading) + strafe * Math.cos(-heading);
+        forward = tempForward;
+        strafe = tempStrafe;
 
         if(alliance.equalsIgnoreCase("red")) {
             targetX = RED_BASKET_X;
