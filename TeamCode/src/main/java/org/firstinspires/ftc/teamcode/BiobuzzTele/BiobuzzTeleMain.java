@@ -8,6 +8,8 @@ import com.qualcomm.hardware.limelightvision.Limelight3A;
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorEx;
 
 import org.firstinspires.ftc.teamcode.BiobuzzAuto.AutoState;
 import org.firstinspires.ftc.teamcode.pedro.Constants;
@@ -26,6 +28,8 @@ public class BiobuzzTeleMain extends OpMode{
     private Follower follower;
     private Limelight3A limelight;
     private String alliance = "unknown";
+    public DcMotorEx bangBang;
+    public DcMotorEx spinner;
     @Override
     public void init(){
         // Follower
@@ -62,6 +66,8 @@ public class BiobuzzTeleMain extends OpMode{
 
         telemetry.addLine("biobuzz telyop ready");
 
+        bangBang = hardwareMap.get(DcMotorEx.class,"shootBang");
+        spinner = hardwareMap.get(DcMotorEx.class,"spinner");
         telemetry.update();
     }
     @Override
@@ -83,7 +89,7 @@ public class BiobuzzTeleMain extends OpMode{
         double targetX;
         double targetY;
         // Fienld-centric trasnsform
-        double heading = pose.heading() - Math.PI / 2.0;
+        double heading = pose.heading() + Math.PI / 2.0;
   // add 90 degers to change side! :)
         // Opional alliance adjustment
         if (alliance.equalsIgnoreCase("red")) {
@@ -151,7 +157,25 @@ public class BiobuzzTeleMain extends OpMode{
         telemetry.addData("X", pose.x());
         telemetry.addData("Y", pose.y());
         telemetry.addData("Heading", pose.heading());
+        if(gamepad1.leftTriggerWasReleased()){
+            //shootbang shooting moter
+            bangBang.setPower(-0.4);
+        } else if (gamepad1.rightTriggerWasReleased()){
+            bangBang.setPower(0);
+        } else if (gamepad1.rightBumperWasReleased()){
 
+            bangBang.setPower(bangBang.getPower() +0.01);
+        }else if (gamepad1.leftBumperWasReleased()) {
+
+            bangBang.setPower(bangBang.getPower() -0.01);
+        }
+        telemetry.addData("Shoot Speed ", bangBang.getPower());
+        if(gamepad1.aWasReleased()){
+            //spinner moter
+            spinner.setPower(-0.2);
+        } else if (gamepad1.bWasReleased()){
+            spinner.setPower(0);
+        }
         telemetry.update();
     }
 }
