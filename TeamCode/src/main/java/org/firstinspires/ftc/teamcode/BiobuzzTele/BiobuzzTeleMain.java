@@ -90,7 +90,8 @@ public class BiobuzzTeleMain extends OpMode{
             heading += Math.PI;
 // add pickup control hub! new bot!
             //add shootBang
-            //add spiner
+            //add sorter
+            //add pickup
         }
 
         double tempForward = forward * Math.cos(-heading) - strafe * Math.sin(-heading);
