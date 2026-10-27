@@ -30,6 +30,7 @@ public class BiobuzzTeleMain extends OpMode{
     private String alliance = "unknown";
     public DcMotorEx bangBang;
     public DcMotorEx spinner;
+    public DcMotorEx pickup;
     @Override
     public void init(){
         // Follower
@@ -68,6 +69,7 @@ public class BiobuzzTeleMain extends OpMode{
 
         bangBang = hardwareMap.get(DcMotorEx.class,"shootBang");
         spinner = hardwareMap.get(DcMotorEx.class,"spinner");
+        pickup = hardwareMap.get(DcMotorEx.class,"pickup");
         telemetry.update();
     }
     @Override
@@ -172,9 +174,11 @@ public class BiobuzzTeleMain extends OpMode{
         telemetry.addData("Shoot Speed ", bangBang.getPower());
         if(gamepad1.aWasReleased()){
             //spinner moter
-            spinner.setPower(-0.2);
+            spinner.setPower(-0.3);
+            pickup.setPower(0.5);
         } else if (gamepad1.bWasReleased()){
             spinner.setPower(0);
+            pickup.setPower(0);
         }
         telemetry.update();
     }

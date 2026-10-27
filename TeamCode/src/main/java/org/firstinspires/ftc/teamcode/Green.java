@@ -46,8 +46,8 @@ public class Green extends LinearOpMode {
         //initialize your follower using constants file
         follower = new com.pedropathing.follower.Follower(
                 new PinpointLocalizer(hardwareMap, Constants.localizerConfig),
-                new Mecanum(hardwareMap, Constants.drivetrainConfig),
-                new com.pedropathing.algorithm.Foresight(Constants.foresightConfig)
+                new Mecanum(hardwareMap, Constants.drivetrainConfig),null
+                //new com.pedropathing.algorithm.Foresight(Constants.foresightConfig)
         );
         // follower = org.firstinspires.ftc.teamcode.pedro.Constants.create(hardwareMap);
         telemetry.addData("Status","Initializing...");

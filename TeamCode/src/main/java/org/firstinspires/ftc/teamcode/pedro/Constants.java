@@ -26,8 +26,8 @@ public class Constants {
         // return new Follower(Drivetrain, Localizer, Foresight);
         return new Follower(
                 new PinpointLocalizer(h, Constants.localizerConfig),
-                new Mecanum(h, Constants.drivetrainConfig),
-                new Foresight(Constants.foresightConfig)
+                new Mecanum(h, Constants.drivetrainConfig),null
+               // new Foresight(Constants.foresightConfig)
         );
     }
     public static MecanumConfig drivetrainConfig = new MecanumConfig(c -> {
@@ -45,16 +45,17 @@ public class Constants {
 
     // BP: public static PinpointConstants localizerConstants = PinPointConstatns()
 
-    public static PinpointConfig localizerConfig = new PinpointConfig(c -> {
+    /*public static PinpointConfig localizerConfig = new PinpointConfig(c -> {
         c.name.set("pinpoint");
         c.podType.set(GoBildaPinpointDriver.GoBildaOdometryPods.goBILDA_4_BAR_POD);
         c.xPodOffset.set(-3.3991229440283592); //TODO Heidi may need to measure inch
         c.yPodOffset.set(-1.4737969049318569); //TODO Heidi may need to measure inch
+
         c.xPodDirection.set(GoBildaPinpointDriver.EncoderDirection.FORWARD);
         c.yPodDirection.set(GoBildaPinpointDriver.EncoderDirection.REVERSED);
         c.globalDistanceUnit.set(DistanceUnit.INCH);
         c.offsetUnits.set(DistanceUnit.INCH);
-    });
+    });*/
 
     /*
     public static final com.pedropathing.algorithm.ForesightConfig forsightConfig = new com.pedropathing.algorithm.ForesightConfig(
@@ -72,6 +73,12 @@ public class Constants {
     );
     */
     public static ForesightConfig foresightConfig = new ForesightConfig(
+            c ->{
+                Controller primaryTranslationalForward = Controller.proportional(0.21667);
+                Controller secondaryTranslationalForward = Controller.proportional(0.0880);
+            }
+    );
+   /* public static ForesightConfig foresightConfig = new ForesightConfig(
             c -> {
                 Controller primaryTranslationalForward = Controller.proportional(0.21667466823086484);
                 Controller secondaryTranslationalForward = Controller.proportional(0.08005550025753985);
@@ -95,6 +102,16 @@ public class Constants {
                 c.naturalForwardDeceleration.set(489.2265286197284);
                 c.naturalStrafeDeceleration.set(55.97575671461449);
             }
-    );
+    );*/
+    public static PinpointConfig localizerConfig = new PinpointConfig(c -> {
+        c.name.set("pinpoint");
+        c.podType.set(GoBildaPinpointDriver.GoBildaOdometryPods.goBILDA_4_BAR_POD);
+        c.xPodOffset.set(4.432806480587937);
+        c.yPodOffset.set(-4.326683104507566);
+        c.xPodDirection.set(GoBildaPinpointDriver.EncoderDirection.FORWARD);
+        c.yPodDirection.set(GoBildaPinpointDriver.EncoderDirection.FORWARD);
+        c.globalDistanceUnit.set(DistanceUnit.INCH);
+        c.offsetUnits.set(DistanceUnit.INCH);
+    });
 
 }
