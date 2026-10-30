@@ -8,8 +8,10 @@ import com.qualcomm.hardware.limelightvision.Limelight3A;
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
+import com.qualcomm.robotcore.hardware.Servo;
 
 import org.firstinspires.ftc.teamcode.BiobuzzAuto.AutoState;
 import org.firstinspires.ftc.teamcode.pedro.Constants;
@@ -31,6 +33,7 @@ public class BiobuzzTeleMain extends OpMode{
     public DcMotorEx bangBang;
     public DcMotorEx spinner;
     public DcMotorEx pickup;
+    public CRServo flipperUpper;
     @Override
     public void init(){
         // Follower
@@ -70,6 +73,7 @@ public class BiobuzzTeleMain extends OpMode{
         bangBang = hardwareMap.get(DcMotorEx.class,"shootBang");
         spinner = hardwareMap.get(DcMotorEx.class,"spinner");
         pickup = hardwareMap.get(DcMotorEx.class,"pickup");
+        flipperUpper = hardwareMap.get(CRServo.class, "flipperUpper");
         telemetry.update();
     }
     @Override
@@ -176,9 +180,11 @@ public class BiobuzzTeleMain extends OpMode{
             //spinner moter
             spinner.setPower(-0.3);
             pickup.setPower(0.5);
+            flipperUpper.setPower(-0.5);
         } else if (gamepad1.bWasReleased()){
             spinner.setPower(0);
             pickup.setPower(0);
+            flipperUpper.setPower(0);
         }
         telemetry.update();
     }
