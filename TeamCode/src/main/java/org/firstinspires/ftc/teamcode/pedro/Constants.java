@@ -26,8 +26,8 @@ public class Constants {
         // return new Follower(Drivetrain, Localizer, Foresight);
         return new Follower(
                 new PinpointLocalizer(h, Constants.localizerConfig),
-                new Mecanum(h, Constants.drivetrainConfig),null
-               // new Foresight(Constants.foresightConfig)
+                new Mecanum(h, Constants.drivetrainConfig),
+               new Foresight(Constants.foresightConfig)
         );
     }
     public static MecanumConfig drivetrainConfig = new MecanumConfig(c -> {
@@ -36,6 +36,8 @@ public class Constants {
         c.frontRightName.set("rightFront");
         c.backLeftName.set("leftBack");
         c.backRightName.set("rightBack");
+        // reverse for real bot; forward for toy
+        //c.frontLeftDirection.set(DcMotorSimple.Direction.FORWARD);
         c.frontLeftDirection.set(DcMotorSimple.Direction.REVERSE);
         c.frontRightDirection.set(DcMotorSimple.Direction.FORWARD);
         c.backLeftDirection.set(DcMotorSimple.Direction.REVERSE);
