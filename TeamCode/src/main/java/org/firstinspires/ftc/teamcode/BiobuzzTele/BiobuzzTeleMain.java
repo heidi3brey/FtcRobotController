@@ -95,7 +95,7 @@ public class BiobuzzTeleMain extends OpMode{
         double targetX;
         double targetY;
         // Fienld-centric trasnsform
-        double heading = pose.heading() + Math.PI / 2.0;
+        double heading = pose.heading(); //+ Math.PI / 2.0;
   // add 90 degers to change side! :)
         // Opional alliance adjustment
         if (alliance.equalsIgnoreCase("red")) {
@@ -119,6 +119,7 @@ public class BiobuzzTeleMain extends OpMode{
             targetY = BLUE_BASKET_Y;
         }
 
+        //autoaim
         if (gamepad1.right_stick_button) {
 
             double desiredHeading =
@@ -185,6 +186,12 @@ public class BiobuzzTeleMain extends OpMode{
             spinner.setPower(0);
             pickup.setPower(0);
             flipperUpper.setPower(0);
+        }
+        if (gamepad1.xWasReleased()){
+            spinner.setPower(-1);
+        }
+        else if (gamepad1.yWasReleased()){
+            spinner.setPower(0.1);
         }
         telemetry.update();
     }

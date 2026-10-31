@@ -21,7 +21,7 @@ import com.qualcomm.robotcore.robocol.Command;
 
 import org.firstinspires.ftc.teamcode.pedro.Constants;
 import org.firstinspires.ftc.teamcode.pedro.Tuning;
-@Disabled
+
 @Autonomous(name = "AutoPathHeidi", group = "Autonomous")
 public class AutoPathHeidi extends LinearOpMode {
 
