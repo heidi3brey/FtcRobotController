@@ -103,7 +103,6 @@ public class AutoPathHeidi extends LinearOpMode {
     public Path path1() {
         return line(start, point1).facingPoint(point1);//.reverseTangent();
     }
-
     public Path path2() {
         return line(point1, point2).facingPoint(point2);//.reverseTangent();
     }
