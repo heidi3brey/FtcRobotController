@@ -18,12 +18,16 @@ public class BiobuzzAutoMain extends LinearOpMode {
 
     // set alliance value based on position and can override with B
     public String alliance = "red";
+    public String robotPath = "yellow";
     private final PoseFactory poseFactory = PoseFactory.degrees();
 
     private static final Pose start =
-            new Pose(56, 9, Math.toRadians(90));
-    private final Pose point1 = poseFactory.of(36, 9, 90);
-    private final Pose point2 = poseFactory.of(15, 95, 90);
+            new Pose(64, 9, Math.toRadians(90));
+    private final Pose point1 = poseFactory.of(64, 98, 90);
+    private final Pose point2 = poseFactory.of(15, 115, 90);
+    private final Pose greenStart = poseFactory.of(8.49, 133.44, 90);
+    private final Pose greenEnd = poseFactory.of(10.81, 116.77, 90);
+
 
     private static final Pose BLUE_START_POSE =
             new Pose(132, 60, Math.toRadians(90));
@@ -54,10 +58,17 @@ public class BiobuzzAutoMain extends LinearOpMode {
             if (gamepad1.b) {
                 alliance = "red";
             }
+            if (gamepad1.yWasReleased()){
+                robotPath = "yellow";
+            }
+            if (gamepad1.aWasReleased()){
+                robotPath = "Green";
+            }
 
             AutoState.alliance = alliance;
 
             telemetry.addData("Alliance", alliance);
+            telemetry.addData( "Robot Path", robotPath);
             //telemetry.addData("X",pose.x());
             //telemetry.addData("Y",pose.y());
             telemetry.update();
@@ -69,21 +80,34 @@ public class BiobuzzAutoMain extends LinearOpMode {
         // TO DO shoot starting pollen, turn on intake
 
         // Execute the first path and wait for it to finish
-        follower.follow(path1());
-        while (opModeIsActive() && follower.isBusy()) {
-            follower.update();
-            telemetryDebug(); // adds real-time debugging updates here
-        }
-        // Execute the second path and wait for it to finish
-        follower.follow(path2());
-        while (opModeIsActive() && follower.isBusy()) {
-            follower.update();
-            telemetryDebug(); // adds real-time debugging updates here
-        }
-        while (opModeIsActive()){
-            follower.update();
-            telemetryDebug(); // adds real-time debugging updates here
+        if (robotPath.equals("yellow")) {
+            follower.follow(path1());
+            while (opModeIsActive() && follower.isBusy()) {
+                follower.update();
+                telemetryDebug(); // adds real-time debugging updates here
+            }
+            // Execute the second path and wait for it to finish
+            follower.follow(path2());
+            while (opModeIsActive() && follower.isBusy()) {
+                follower.update();
+                telemetryDebug(); // adds real-time debugging updates here
+            }
+            while (opModeIsActive()) {
+                follower.update();
+                telemetryDebug(); // adds real-time debugging updates here
 
+            }
+        } else if (robotPath.equals("green")) {
+            follower.follow(greenPath());
+            while (opModeIsActive() && follower.isBusy()) {
+                follower.update();
+                telemetryDebug(); // adds real-time debugging updates here
+            }
+            while (opModeIsActive()) {
+                follower.update();
+                telemetryDebug(); // adds real-time debugging updates here
+
+            }
         }
 
 
@@ -128,6 +152,9 @@ public class BiobuzzAutoMain extends LinearOpMode {
     }
     public Path path2() {
         return line(point1, point2).constant(point2);
+    }
+    public Path greenPath() {
+        return line(greenStart, greenEnd).constant(greenEnd);
     }
     public void telemetryDebug(){
         telemetry.addData("x", follower.pose().x());
