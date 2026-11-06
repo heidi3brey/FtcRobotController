@@ -15,7 +15,7 @@ import com.qualcomm.robotcore.hardware.Servo;
 
 import org.firstinspires.ftc.teamcode.BiobuzzAuto.AutoState;
 import org.firstinspires.ftc.teamcode.pedro.Constants;
-@Disabled
+
 @TeleOp(name="BiobuzzTeleMain")
 public class BiobuzzTeleMain extends OpMode{
 
@@ -179,7 +179,7 @@ public class BiobuzzTeleMain extends OpMode{
         telemetry.addData("Shoot Speed ", bangBang.getPower());
         if(gamepad1.aWasReleased()){
             //spinner moter
-            spinner.setPower(-0.3);
+            spinner.setPower(-1);
             pickup.setPower(0.5);
             flipperUpper.setPower(-0.5);
         } else if (gamepad1.bWasReleased()){
