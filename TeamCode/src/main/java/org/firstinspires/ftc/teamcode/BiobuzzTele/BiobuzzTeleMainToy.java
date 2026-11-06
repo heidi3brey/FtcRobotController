@@ -11,8 +11,8 @@ import com.qualcomm.robotcore.hardware.DcMotorEx;
 
 import org.firstinspires.ftc.teamcode.BiobuzzAuto.AutoState;
 import org.firstinspires.ftc.teamcode.pedro.Constants;
-@Disabled
-@TeleOp(name="BiobuzzTeleMain")
+
+@TeleOp(name="BiobuzzTeleMainToy")
 public class BiobuzzTeleMainToy extends OpMode{
 
     // --------------------------
@@ -156,7 +156,7 @@ public class BiobuzzTeleMainToy extends OpMode{
             );
         }
 
-        follower.manual(forward,strafe,rotate);
+        follower.manual(-strafe,-forward,rotate);
 
         telemetry.addData("X", pose.x());
         telemetry.addData("Y", pose.y());

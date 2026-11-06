@@ -9,10 +9,11 @@ import com.pedropathing.paths.Path;
 import com.pedropathing.revhub.drivetrains.Mecanum;
 import com.pedropathing.revhub.localizers.PinpointLocalizer;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
 import org.firstinspires.ftc.teamcode.pedro.Constants;
-
+@Disabled
 @Autonomous(name = "BiobuzzAutoMain", preselectTeleOp = "BiobuzzTeleMain")
 public class BiobuzzAutoMain extends LinearOpMode {
 
@@ -26,7 +27,7 @@ public class BiobuzzAutoMain extends LinearOpMode {
     private final Pose point1 = poseFactory.of(64, 98, 90);
     private final Pose point2 = poseFactory.of(15, 115, 90);
     private final Pose greenStart = poseFactory.of(8.49, 133.44, 90);
-    private final Pose greenEnd = poseFactory.of(10.81, 90, 90);
+    private final Pose greenEnd = poseFactory.of(10.81, 150, 90);
     private  final  Pose offwallstart = poseFactory.of(0,0,90);
 
     private  final  Pose offwallend = poseFactory.of(5,5,90);
@@ -84,6 +85,7 @@ public class BiobuzzAutoMain extends LinearOpMode {
 
         // Execute the first path and wait for it to finish
         if (robotPath.equals("yellow")) {
+            follower.setPose(start);
             follower.follow(path1());
             while (opModeIsActive() && follower.isBusy()) {
                 follower.update();
@@ -101,6 +103,7 @@ public class BiobuzzAutoMain extends LinearOpMode {
 
             }
         } else if (robotPath.equals("green")) {
+            follower.setPose(greenStart);
             follower.follow(greenPath());
             while (opModeIsActive() && follower.isBusy()) {
                 follower.update();
@@ -112,7 +115,8 @@ public class BiobuzzAutoMain extends LinearOpMode {
 
             }
         } else {
-            
+            follower.setPose(offwallstart);
+
             follower.follow(offwallpath());
             while (opModeIsActive() && follower.isBusy()) {
                 follower.update();
