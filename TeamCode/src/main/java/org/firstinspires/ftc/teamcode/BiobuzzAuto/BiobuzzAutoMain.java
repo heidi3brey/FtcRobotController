@@ -18,7 +18,7 @@ public class BiobuzzAutoMain extends LinearOpMode {
 
     // set alliance value based on position and can override with B
     public String alliance = "red";
-    public String robotPath = "yellow";
+    public String robotPath = "none";
     private final PoseFactory poseFactory = PoseFactory.degrees();
 
     private static final Pose start =
@@ -26,7 +26,10 @@ public class BiobuzzAutoMain extends LinearOpMode {
     private final Pose point1 = poseFactory.of(64, 98, 90);
     private final Pose point2 = poseFactory.of(15, 115, 90);
     private final Pose greenStart = poseFactory.of(8.49, 133.44, 90);
-    private final Pose greenEnd = poseFactory.of(10.81, 116.77, 90);
+    private final Pose greenEnd = poseFactory.of(10.81, 90, 90);
+    private  final  Pose offwallstart = poseFactory.of(0,0,90);
+
+    private  final  Pose offwallend = poseFactory.of(5,5,90);
 
 
     private static final Pose BLUE_START_POSE =
@@ -62,7 +65,7 @@ public class BiobuzzAutoMain extends LinearOpMode {
                 robotPath = "yellow";
             }
             if (gamepad1.aWasReleased()){
-                robotPath = "Green";
+                robotPath = "green";
             }
 
             AutoState.alliance = alliance;
@@ -99,6 +102,18 @@ public class BiobuzzAutoMain extends LinearOpMode {
             }
         } else if (robotPath.equals("green")) {
             follower.follow(greenPath());
+            while (opModeIsActive() && follower.isBusy()) {
+                follower.update();
+                telemetryDebug(); // adds real-time debugging updates here
+            }
+            while (opModeIsActive()) {
+                follower.update();
+                telemetryDebug(); // adds real-time debugging updates here
+
+            }
+        } else {
+            
+            follower.follow(offwallpath());
             while (opModeIsActive() && follower.isBusy()) {
                 follower.update();
                 telemetryDebug(); // adds real-time debugging updates here
@@ -155,6 +170,9 @@ public class BiobuzzAutoMain extends LinearOpMode {
     }
     public Path greenPath() {
         return line(greenStart, greenEnd).constant(greenEnd);
+    }
+    public Path offwallpath() {
+        return line(offwallstart, offwallend).constant(offwallend);
     }
     public void telemetryDebug(){
         telemetry.addData("x", follower.pose().x());
