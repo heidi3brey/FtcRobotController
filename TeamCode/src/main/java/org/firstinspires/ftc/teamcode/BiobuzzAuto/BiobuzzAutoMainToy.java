@@ -13,7 +13,7 @@ import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
 import org.firstinspires.ftc.teamcode.pedro.Constants;
-
+@Disabled
 @Autonomous(name = "BiobuzzAutoMainToy", preselectTeleOp = "BiobuzzTeleMainToy")
 public class BiobuzzAutoMainToy extends LinearOpMode {
 

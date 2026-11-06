@@ -11,7 +11,7 @@ import com.qualcomm.robotcore.hardware.DcMotorEx;
 
 import org.firstinspires.ftc.teamcode.BiobuzzAuto.AutoState;
 import org.firstinspires.ftc.teamcode.pedro.Constants;
-
+@Disabled
 @TeleOp(name="BiobuzzTeleMainToy")
 public class BiobuzzTeleMainToy extends OpMode{
 

@@ -38,8 +38,9 @@ public class Constants {
         c.frontRightName.set("rightFront");
         c.backLeftName.set("leftBack");
         c.backRightName.set("rightBack");
-        // reverse for real bot; forward for toy
+        // TODO check if this is for real robot
         // c.frontLeftDirection.set(DcMotorSimple.Direction.FORWARD);
+        // reverse for toy
         c.frontLeftDirection.set(DcMotorSimple.Direction.REVERSE);
         c.frontRightDirection.set(DcMotorSimple.Direction.FORWARD);
         c.backLeftDirection.set(DcMotorSimple.Direction.REVERSE);
@@ -50,6 +51,7 @@ public class Constants {
     // BP: public static PinpointConstants localizerConstants = PinPointConstatns()
 
     //for toy bot
+    /*
     public static PinpointConfig localizerConfig = new PinpointConfig(c -> {
         c.name.set("pinpoint");
         c.podType.set(GoBildaPinpointDriver.GoBildaOdometryPods.goBILDA_4_BAR_POD);
@@ -61,8 +63,8 @@ public class Constants {
         c.globalDistanceUnit.set(DistanceUnit.INCH);
         c.offsetUnits.set(DistanceUnit.INCH);
     });
+    */
     //for main bot
-    /*
     public static PinpointConfig localizerConfig = new PinpointConfig(c -> {
         c.name.set("pinpoint");
         c.podType.set(GoBildaPinpointDriver.GoBildaOdometryPods.goBILDA_4_BAR_POD);
@@ -73,8 +75,9 @@ public class Constants {
         c.globalDistanceUnit.set(DistanceUnit.INCH);
         c.offsetUnits.set(DistanceUnit.INCH);
     });
-    */
+
     //for toy bot
+    /*
     public static ForesightConfig foresightConfig = new ForesightConfig(
             c -> {
                 Controller primaryTranslationalForward = Controller.proportional(0.21667466823086484);
@@ -100,9 +103,8 @@ public class Constants {
                 c.naturalStrafeDeceleration.set(55.97575671461449);
             }
     );
-
+    */
     //for main bot
-    /*
     public static ForesightConfig foresightConfig = new ForesightConfig(
             c -> {
                 Controller primaryTranslationalForward = Controller.proportional(0.27277753843595487);
@@ -127,5 +129,5 @@ public class Constants {
                 c.naturalForwardDeceleration.set(43.24417323676764);
                 c.naturalStrafeDeceleration.set(69.29856082122693);
             }
-    );*/
+    );
 }
