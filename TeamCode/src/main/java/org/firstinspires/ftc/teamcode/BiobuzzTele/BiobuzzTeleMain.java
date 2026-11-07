@@ -76,6 +76,7 @@ public class BiobuzzTeleMain extends OpMode{
         pickup = hardwareMap.get(DcMotorEx.class,"pickup");
         flipperUpper = hardwareMap.get(CRServo.class, "flipperUpper");
         blocker = hardwareMap.get(Servo.class,"blocker");
+        bangBang.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         telemetry.update();
     }
     @Override
@@ -160,8 +161,12 @@ public class BiobuzzTeleMain extends OpMode{
                     Math.toDegrees(pose.heading())
             );
         }
+        heading = follower.pose().heading();
+        double fieldCentricForward = forward * Math.cos(-heading) - strafe * Math.sin(-heading);
+        double fieldCentricStrafe = forward * Math.sin(-heading) + strafe * Math.cos(-heading);
+        
+        follower.manual(fieldCentricForward,fieldCentricStrafe,rotate);
 
-        follower.manual(forward,strafe,rotate);
 
         telemetry.addData("X", pose.x());
         telemetry.addData("Y", pose.y());
@@ -215,9 +220,9 @@ public class BiobuzzTeleMain extends OpMode{
         //driver 2
         // up d pad block up
         // down d pad block down
-        if(gamepad2.dpadUpWasReleased()){
+        if(gamepad2.dpad_up){
             blocker.setPosition(1);
-        }else if (gamepad2.dpadDownWasReleased()){
+        }else {
             blocker.setPosition(0);
         }
 
