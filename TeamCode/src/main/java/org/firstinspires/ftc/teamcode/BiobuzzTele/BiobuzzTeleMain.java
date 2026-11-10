@@ -164,7 +164,7 @@ public class BiobuzzTeleMain extends OpMode{
         heading = follower.pose().heading();
         double fieldCentricForward = forward * Math.cos(-heading) - strafe * Math.sin(-heading);
         double fieldCentricStrafe = forward * Math.sin(-heading) + strafe * Math.cos(-heading);
-        
+
         follower.manual(fieldCentricForward,fieldCentricStrafe,rotate);
 
 
@@ -173,7 +173,7 @@ public class BiobuzzTeleMain extends OpMode{
         telemetry.addData("Heading", pose.heading());
         if(gamepad1.leftTriggerWasReleased()|| gamepad2.leftTriggerWasReleased()){
             //shootbang shooting moter
-            bangBang.setPower(-0.47);
+            bangBang.setPower(-0.55);
         } else if (gamepad1.rightTriggerWasReleased() || gamepad2.rightTriggerWasReleased()){
             bangBang.setPower(0);
         } else if (gamepad1.rightBumperWasReleased() || gamepad2.rightBumperWasReleased()){
@@ -193,8 +193,8 @@ public class BiobuzzTeleMain extends OpMode{
         //data for controls
         telemetry.addLine("------------------------------------");
         telemetry.addLine("------------Intake----------------- ");
-        telemetry.addLine("      [Y] Reverse");
-        telemetry.addLine(" [X]                 [B] OFF");
+        telemetry.addLine("      [Y]  ");
+        telemetry.addLine(" [X] Reverse                [B] OFF");
         telemetry.addLine("      [A] ON ");
         telemetry.addLine("------------------------------------");
         telemetry.addData("Pick up motor power: ",pickup.getPower());
@@ -221,9 +221,9 @@ public class BiobuzzTeleMain extends OpMode{
         // up d pad block up
         // down d pad block down
         if(gamepad2.dpad_up){
-            blocker.setPosition(1);
-        }else {
             blocker.setPosition(0);
+        }else {
+            blocker.setPosition(1);
         }
 
         telemetry.addLine("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
