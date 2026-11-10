@@ -65,6 +65,7 @@ public class Constants {
     });
     */
     //for main bot
+    /*
     public static PinpointConfig localizerConfig = new PinpointConfig(c -> {
         c.name.set("pinpoint");
         c.podType.set(GoBildaPinpointDriver.GoBildaOdometryPods.goBILDA_4_BAR_POD);
@@ -75,7 +76,19 @@ public class Constants {
         c.globalDistanceUnit.set(DistanceUnit.INCH);
         c.offsetUnits.set(DistanceUnit.INCH);
     });
-
+    */
+    public static PinpointConfig localizerConfig = new PinpointConfig(c -> {
+        c.name.set("pinpoint");
+        c.podType.set(GoBildaPinpointDriver.GoBildaOdometryPods.goBILDA_4_BAR_POD);
+     //   c.xPodOffset.set(4.8775190818966845);
+     //   c.yPodOffset.set(-6.0131896011472685);
+        c.xPodOffset.set(-6.5);
+        c.yPodOffset.set(-3.5);
+        c.xPodDirection.set(GoBildaPinpointDriver.EncoderDirection.FORWARD);
+        c.yPodDirection.set(GoBildaPinpointDriver.EncoderDirection.FORWARD);
+        c.globalDistanceUnit.set(DistanceUnit.INCH);
+        c.offsetUnits.set(DistanceUnit.INCH);
+    });
     //for toy bot
     /*
     public static ForesightConfig foresightConfig = new ForesightConfig(
@@ -105,6 +118,7 @@ public class Constants {
     );
     */
     //for main bot
+    /*
     public static ForesightConfig foresightConfig = new ForesightConfig(
             c -> {
                 Controller primaryTranslationalForward = Controller.proportional(0.27277753843595487);
@@ -118,7 +132,8 @@ public class Constants {
                 c.coast.set(Controller.proportionalFeedforward(0.018841179360138797));
                 c.brake.set(Controller.proportionalFeedforward(0.016015002456117977));
 
-                c.headingFeedback.set(Controller.proportional(48.555473477370384));
+                //c.headingFeedback.set(Controller.proportional(48.555473477370384));
+                c.headingFeedback.set(Controller.proportional(5.555473477370384));
                 c.headingBrakeCoefficients.set(Vector2D.cartesian(0.031235536370563734, 0.05137548624520718));
 
                 c.linearBrakeCoefficients.set(Matrix.diag(0.016377330167571348, 0.025212415184059006));
@@ -128,6 +143,31 @@ public class Constants {
                 c.maxAchievableStrafeVelocity.set(45.315456210814986);
                 c.naturalForwardDeceleration.set(43.24417323676764);
                 c.naturalStrafeDeceleration.set(69.29856082122693);
+            }*/
+
+    public static ForesightConfig foresightConfig = new ForesightConfig(
+            c -> {
+                Controller primaryTranslationalForward = Controller.proportional(0.23174216878520373);
+                Controller secondaryTranslationalForward = Controller.proportional(0.08562253910133825);
+                Controller primaryTranslationalLateral = Controller.proportional(0.3373209056705249);
+                Controller secondaryTranslationalLateral = Controller.proportional(0.12463106126465764);
+
+                c.forwardTranslational.set(Controller.piecewise(secondaryTranslationalForward).put(2.5, primaryTranslationalForward));
+                c.strafeTranslational.set(Controller.piecewise(secondaryTranslationalLateral).put(2.5, primaryTranslationalLateral));
+
+                c.coast.set(Controller.proportionalFeedforward(0.017276391217571973));
+                c.brake.set(Controller.proportionalFeedforward(0.014684932534936176));
+
+                c.headingFeedback.set(Controller.proportional(64.27418834282237));
+                c.headingBrakeCoefficients.set(Vector2D.cartesian(0.050848347273806514, 0.04394605505065055));
+
+                c.linearBrakeCoefficients.set(Matrix.diag(0.017969225531585517, 0.01715291279627458));
+                c.quadraticBrakeCoefficients.set(Matrix.diag(0.023454116936262766, 9.745559407515306E-4));
+
+                c.maxAchievableForwardVelocity.set(60.34878089470438);
+                c.maxAchievableStrafeVelocity.set(47.773287405712686);
+                c.naturalForwardDeceleration.set(35.572050907129345);
+                c.naturalStrafeDeceleration.set(61.761936498783356);
             }
     );
 }
