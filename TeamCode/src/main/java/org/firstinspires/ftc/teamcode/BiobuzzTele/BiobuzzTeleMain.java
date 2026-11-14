@@ -35,6 +35,7 @@ public class BiobuzzTeleMain extends OpMode{
     public DcMotorEx pickup;
     public CRServo flipperUpper;
     public Servo blocker;
+    public String fieldOrBot="field";
     @Override
     public void init(){
         // Follower
@@ -162,12 +163,28 @@ public class BiobuzzTeleMain extends OpMode{
             );
         }
         heading = follower.pose().heading();
-       // double fieldCentricForward = forward * Math.cos(-heading) - strafe * Math.sin(-heading);
-        //double fieldCentricStrafe = forward * Math.sin(-heading) + strafe * Math.cos(-heading);
+        double fieldCentricForward = forward * Math.cos(-heading) - strafe * Math.sin(-heading);
+        double fieldCentricStrafe = forward * Math.sin(-heading) + strafe * Math.cos(-heading);
+        if (gamepad1.backWasReleased()){
+            if (fieldOrBot.equals("field")) {
+                fieldOrBot = "bot";
+            } else {
 
-      //  follower.manual(fieldCentricForward,fieldCentricStrafe,rotate);
+                 fieldOrBot = "field";
 
-        follower.manual (forward,strafe,rotate);
+                }
+        }
+        if (fieldOrBot.equals("field")){
+            follower.manual(fieldCentricForward,fieldCentricStrafe,rotate);
+
+        } else {
+            follower.manual (forward,strafe,rotate);
+
+        }
+        telemetry.addData("field",fieldOrBot);
+
+
+
         telemetry.addData("X", pose.x());
         telemetry.addData("Y", pose.y());
         telemetry.addData("Heading", pose.heading());

@@ -23,9 +23,9 @@ public class BiobuzzAutoMain extends LinearOpMode {
     private final PoseFactory poseFactory = PoseFactory.degrees();
 
     private static final Pose start =
-            new Pose(0, 0, Math.toRadians(90));
-    private final Pose point1 = poseFactory.of(24, 0, 90);
-    private final Pose point2 = poseFactory.of(24, 24, 90);
+            new Pose(56, 0, Math.toRadians(90));
+    private final Pose point1 = poseFactory.of(60, 115, 90);
+    private final Pose point2 = poseFactory.of(12, 116, 90);
     private final Pose greenStart = poseFactory.of(8.49, 133.44, 90);
     private final Pose greenEnd = poseFactory.of(10.81, 150, 90);
     private  final  Pose offwallstart = poseFactory.of(0,0,90);
@@ -137,7 +137,7 @@ public class BiobuzzAutoMain extends LinearOpMode {
             follower.setPose(BLUE_START_POSE);
         }
         follower.update();
-
+        //todo not working
         AutoState.lastPose = follower.pose();
 
 
