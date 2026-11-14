@@ -47,6 +47,16 @@ public class Constants {
         c.backRightDirection.set(DcMotorSimple.Direction.FORWARD);
         c.manualBrakeMode.set(true);
     });
+    /*public static MecanumConfig drivetrainConfig = new MecanumConfig(c -> {
+        c.frontLeftName.set("leftFront");
+        c.frontRightName.set("rightFront");
+        c.backLeftName.set("leftBack");
+        c.backRightName.set("rightBack");
+        c.frontLeftDirection.set(DcMotorSimple.Direction.REVERSE);
+        c.frontRightDirection.set(DcMotorSimple.Direction.FORWARD);
+        c.backLeftDirection.set(DcMotorSimple.Direction.REVERSE);
+        c.backRightDirection.set(DcMotorSimple.Direction.FORWARD);
+    });*/
 
     // BP: public static PinpointConstants localizerConstants = PinPointConstatns()
 
@@ -128,7 +138,7 @@ public class Constants {
             }
     );
     */
-    
+
 
     public static ForesightConfig foresightConfig = new ForesightConfig(
             c -> {

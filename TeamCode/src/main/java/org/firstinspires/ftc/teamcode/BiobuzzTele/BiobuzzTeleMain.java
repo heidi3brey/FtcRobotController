@@ -91,9 +91,9 @@ public class BiobuzzTeleMain extends OpMode{
 
         Pose pose = follower.pose();
 
-        double forward = -gamepad1.left_stick_y;
-        double strafe = -gamepad1.left_stick_x;
-        double rotate = gamepad1.right_stick_x;
+        double forward = -gamepad1.left_stick_y *.5;
+        double strafe = -gamepad1.left_stick_x *.5;
+        double rotate = gamepad1.right_stick_x*.5;
 
         double targetX;
         double targetY;
@@ -109,10 +109,10 @@ public class BiobuzzTeleMain extends OpMode{
             //add pickup
         }
 
-        double tempForward = forward * Math.cos(-heading) - strafe * Math.sin(-heading);
-        double tempStrafe = forward * Math.sin(-heading) + strafe * Math.cos(-heading);
-        forward = tempForward;
-        strafe = tempStrafe;
+      //  double tempForward = forward * Math.cos(-heading) - strafe * Math.sin(-heading);
+        //double tempStrafe = forward * Math.sin(-heading) + strafe * Math.cos(-heading);
+        //forward = tempForward;
+        //strafe = tempStrafe;
 
         if(alliance.equalsIgnoreCase("red")) {
             targetX = RED_BASKET_X;
@@ -162,12 +162,12 @@ public class BiobuzzTeleMain extends OpMode{
             );
         }
         heading = follower.pose().heading();
-        double fieldCentricForward = forward * Math.cos(-heading) - strafe * Math.sin(-heading);
-        double fieldCentricStrafe = forward * Math.sin(-heading) + strafe * Math.cos(-heading);
+       // double fieldCentricForward = forward * Math.cos(-heading) - strafe * Math.sin(-heading);
+        //double fieldCentricStrafe = forward * Math.sin(-heading) + strafe * Math.cos(-heading);
 
-        follower.manual(fieldCentricForward,fieldCentricStrafe,rotate);
+      //  follower.manual(fieldCentricForward,fieldCentricStrafe,rotate);
 
-
+        follower.manual (forward,strafe,rotate);
         telemetry.addData("X", pose.x());
         telemetry.addData("Y", pose.y());
         telemetry.addData("Heading", pose.heading());
