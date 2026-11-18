@@ -24,8 +24,8 @@ public class BiobuzzAutoMain extends LinearOpMode {
 
     private static final Pose start =
             new Pose(56, 0, Math.toRadians(90));
-    private final Pose point1 = poseFactory.of(60, 115, 90);
-    private final Pose point2 = poseFactory.of(12, 116, 90);
+    private final Pose point1 = poseFactory.of(56.1,24 , 90);
+    private final Pose point2 = poseFactory.of(55, 24, 90);
     private final Pose greenStart = poseFactory.of(8.49, 133.44, 90);
     private final Pose greenEnd = poseFactory.of(10.81, 150, 90);
     private  final  Pose offwallstart = poseFactory.of(0,0,90);
@@ -130,12 +130,7 @@ public class BiobuzzAutoMain extends LinearOpMode {
         }
 
 
-        if (alliance.equals("red")) {
-            follower.setPose(start);
-        }
-        else {
-            follower.setPose(BLUE_START_POSE);
-        }
+
         follower.update();
         //todo not working
         AutoState.lastPose = follower.pose();
@@ -162,6 +157,19 @@ public class BiobuzzAutoMain extends LinearOpMode {
         //save alliance selection to use in teleop
         AutoState.alliance = alliance;
         AutoState.lastPose = follower.pose();
+
+        telemetry.addData(
+                "Stored X",
+                AutoState.lastPose.x());
+
+        telemetry.addData(
+                "Stored Y",
+                AutoState.lastPose.y());
+
+        telemetry.addData(
+                "Stored Heading",
+                Math.toDegrees(
+                        AutoState.lastPose.heading()));
 
         telemetry.addLine("Pose saved for TeleOp");
         telemetry.update();

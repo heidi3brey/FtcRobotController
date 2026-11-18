@@ -36,6 +36,8 @@ public class BiobuzzTeleMain extends OpMode{
     public CRServo flipperUpper;
     public Servo blocker;
     public String fieldOrBot="field";
+    public double defaultShootPower = -0.85;
+    public double defaultShootVelocity = -950;
     @Override
     public void init(){
         // Follower
@@ -48,12 +50,12 @@ public class BiobuzzTeleMain extends OpMode{
         alliance = AutoState.alliance;
 
         //  Limelight setup based on alliance
-        limelight = hardwareMap.get(Limelight3A.class,"limeLight");
-        if (alliance.equals("red")){
+        //limelight = hardwareMap.get(Limelight3A.class,"limeLight");
+        /*if (alliance.equals("red")){
             limelight.pipelineSwitch(0);
         } else if (alliance.equals("blue")) {
             limelight.pipelineSwitch(1);
-        }
+        }*/
 
         telemetry.addData("Alliance", alliance);
 
@@ -71,18 +73,47 @@ public class BiobuzzTeleMain extends OpMode{
                         AutoState.lastPose.heading()));
 
         telemetry.addLine("biobuzz telyop ready");
+        try {
+            bangBang = hardwareMap.get(DcMotorEx.class,"shootBang");
 
-        bangBang = hardwareMap.get(DcMotorEx.class,"shootBang");
-        spinner = hardwareMap.get(DcMotorEx.class,"spinner");
-        pickup = hardwareMap.get(DcMotorEx.class,"pickup");
-        flipperUpper = hardwareMap.get(CRServo.class, "flipperUpper");
-        blocker = hardwareMap.get(Servo.class,"blocker");
-        bangBang.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        } catch (Exception e){
+            telemetry.addLine ("ShootBang No Work");
+        }
+        try {
+            spinner = hardwareMap.get(DcMotorEx.class,"spinner");
+
+        } catch (Exception e){
+            telemetry.addLine ("Spinner No Work");
+        }
+        try {
+            pickup = hardwareMap.get(DcMotorEx.class,"pickup");
+
+        } catch (Exception e){
+            telemetry.addLine("Pickup No Work");
+        }
+        try {
+            flipperUpper = hardwareMap.get(CRServo.class, "flipperUpper");
+
+        } catch (Exception e){
+            telemetry.addLine("FlipperUpper No Work");
+        }
+        try {
+            blocker = hardwareMap.get(Servo.class,"blocker");
+
+        } catch (Exception e){
+            telemetry.addLine("Blocker No Work");
+        }
+        try {
+            bangBang.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+
+        } catch (Exception e){
+            telemetry.addLine("BangBang No Work");
+        }
         telemetry.update();
     }
     @Override
     public void start(){
-        limelight.start();
+        //limelight.start();
     }
 
     @Override
@@ -92,9 +123,9 @@ public class BiobuzzTeleMain extends OpMode{
 
         Pose pose = follower.pose();
 
-        double forward = -gamepad1.left_stick_y *.5;
-        double strafe = -gamepad1.left_stick_x *.5;
-        double rotate = gamepad1.right_stick_x*.5;
+        double forward = -gamepad1.left_stick_y *.75;
+        double strafe = -gamepad1.left_stick_x *.75;
+        double rotate = gamepad1.right_stick_x*.75;
 
         double targetX;
         double targetY;
@@ -188,67 +219,76 @@ public class BiobuzzTeleMain extends OpMode{
         telemetry.addData("X", pose.x());
         telemetry.addData("Y", pose.y());
         telemetry.addData("Heading", pose.heading());
-        if(gamepad1.leftTriggerWasReleased()|| gamepad2.leftTriggerWasReleased()){
-            //shootbang shooting moter
-            bangBang.setPower(-0.55);
-        } else if (gamepad1.rightTriggerWasReleased() || gamepad2.rightTriggerWasReleased()){
-            bangBang.setPower(0);
-        } else if (gamepad1.rightBumperWasReleased() || gamepad2.rightBumperWasReleased()){
-            //decrease shoot speed
-            bangBang.setPower(bangBang.getPower() +0.01);
-        }else if (gamepad1.leftBumperWasReleased() || gamepad2.leftBumperWasReleased()) {
-            //increase shoot speed
-            bangBang.setPower(bangBang.getPower() -0.01);
+        if (bangBang!= null) {
+            if (gamepad1.leftTriggerWasReleased() || gamepad2.leftTriggerWasReleased()) {
+                //shootbang shooting moter
+                bangBang.setPower(defaultShootPower);
+                bangBang.setVelocity(defaultShootVelocity);
+            } else if (gamepad1.rightTriggerWasReleased() || gamepad2.rightTriggerWasReleased()) {
+                bangBang.setPower(0);
+            } else if (gamepad1.rightBumperWasReleased() || gamepad2.rightBumperWasReleased()) {
+                //decrease shoot speed
+                bangBang.setPower(bangBang.getVelocity() + 5);
+            } else if (gamepad1.leftBumperWasReleased() || gamepad2.leftBumperWasReleased()) {
+                //increase shoot speed
+                bangBang.setPower(bangBang.getVelocity() - 5);
+            }
         }
         telemetry.addLine("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
         telemetry.addLine("   left bumper: +speed-----right bumper: -speed");
         telemetry.addLine("left trigger: shoot ON---right trigger: shoot OFF");
         telemetry.addLine("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
+        if (bangBang!= null) {
+            telemetry.addData("Shoot Speed ", -bangBang.getPower());
+            telemetry.addData("Shoot Velocity", -bangBang.getVelocity());
 
-        telemetry.addData("Shoot Speed ", -bangBang.getPower());
-
-        //data for controls
-        telemetry.addLine("------------------------------------");
-        telemetry.addLine("------------Intake----------------- ");
-        telemetry.addLine("      [Y]  ");
-        telemetry.addLine(" [X] Reverse                [B] OFF");
-        telemetry.addLine("      [A] ON ");
-        telemetry.addLine("------------------------------------");
-        telemetry.addData("Pick up motor power: ",pickup.getPower());
-        telemetry.addData("Spinner motor power: ",-spinner.getPower());
-
-        if(gamepad1.aWasReleased() || gamepad2.aWasReleased()){
-            //intake ON
-            spinner.setPower(-1);
-            pickup.setPower(0.5);
-            //flipperUpper.setPower(-0.5);
-        } else if (gamepad1.bWasReleased() || gamepad2.bWasReleased()){
-            //intake OFF
-            spinner.setPower(0);
-            pickup.setPower(0);
-            flipperUpper.setPower(0);
-        }else if (gamepad1.xWasReleased() || gamepad2.xWasReleased()){
-            // reverse
-            pickup.setPower(-0.5);
-            spinner.setPower(1);
+            //data for controls
+            telemetry.addLine("------------------------------------");
+            telemetry.addLine("------------Intake----------------- ");
+            telemetry.addLine("      [Y]  ");
+            telemetry.addLine(" [X] Reverse                [B] OFF");
+            telemetry.addLine("      [A] ON ");
+            telemetry.addLine("------------------------------------");
+            telemetry.addData("Pick up motor power: ",pickup.getPower());
+            telemetry.addData("Spinner motor power: ",-spinner.getPower());
+            if(gamepad1.aWasReleased() || gamepad2.aWasReleased()){
+                //intake ON
+                spinner.setPower(-1);
+                pickup.setPower(0.5);
+                //flipperUpper.setPower(-0.5);
+            } else if (gamepad1.bWasReleased() || gamepad2.bWasReleased()){
+                //intake OFF
+                spinner.setPower(0);
+                pickup.setPower(0);
+                flipperUpper.setPower(0);
+            }else if (gamepad1.xWasReleased() || gamepad2.xWasReleased()){
+                // reverse
+                pickup.setPower(-0.5);
+                spinner.setPower(1);
+            }
         }
+
+
+
 
         //blocking from shooting
         //driver 2
         // up d pad block up
         // down d pad block down
-        if(gamepad2.dpad_up){
-            blocker.setPosition(0);
-        }else {
-            blocker.setPosition(1);
-        }
+        if (blocker!= null) {
+            if (gamepad2.dpad_up ){//&& bangBang.getVelocity()>=defaultShootVelocity) {
+                blocker.setPosition(.25);
+            } else {
+                blocker.setPosition(.6);
+            }
 
-        telemetry.addLine("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
-        telemetry.addLine("------Shot Blocker------------");
-        telemetry.addLine("         UP - Blocker up    ");
-        telemetry.addLine("  left                  right   ");
-        telemetry.addLine("         Down - Blocker down");
-        telemetry.addData("Block position", blocker.getPosition());
+            telemetry.addLine("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
+            telemetry.addLine("------Shot Blocker------------");
+            telemetry.addLine("         UP - Blocker up    ");
+            telemetry.addLine("  left                  right   ");
+            telemetry.addLine("         Down - Blocker down");
+            telemetry.addData("Block position", blocker.getPosition());
+        }
         telemetry.update();
     }
 }
