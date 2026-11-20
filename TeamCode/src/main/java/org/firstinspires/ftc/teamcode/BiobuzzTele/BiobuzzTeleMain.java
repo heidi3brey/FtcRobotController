@@ -1,5 +1,7 @@
 package org.firstinspires.ftc.teamcode.BiobuzzTele;
 
+import static java.lang.Thread.sleep;
+
 import com.pedropathing.follower.Follower;
 import com.pedropathing.math.Pose;
 import com.qualcomm.hardware.limelightvision.LLResult;
@@ -12,6 +14,7 @@ import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.Servo;
+import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.teamcode.BiobuzzAuto.AutoState;
 import org.firstinspires.ftc.teamcode.pedro.Constants;
@@ -38,6 +41,7 @@ public class BiobuzzTeleMain extends OpMode{
     public String fieldOrBot="field";
     public double defaultShootPower = -0.85;
     public double defaultShootVelocity = -950;
+    private ElapsedTime timer = new ElapsedTime();
     @Override
     public void init(){
         // Follower
@@ -123,9 +127,9 @@ public class BiobuzzTeleMain extends OpMode{
 
         Pose pose = follower.pose();
 
-        double forward = -gamepad1.left_stick_y *.75;
-        double strafe = -gamepad1.left_stick_x *.75;
-        double rotate = gamepad1.right_stick_x*.75;
+        double forward = -gamepad1.left_stick_y *1;
+        double strafe = -gamepad1.left_stick_x *1;
+        double rotate = gamepad1.right_stick_x*-1;
 
         double targetX;
         double targetY;
@@ -222,16 +226,15 @@ public class BiobuzzTeleMain extends OpMode{
         if (bangBang!= null) {
             if (gamepad1.leftTriggerWasReleased() || gamepad2.leftTriggerWasReleased()) {
                 //shootbang shooting moter
-                bangBang.setPower(defaultShootPower);
                 bangBang.setVelocity(defaultShootVelocity);
             } else if (gamepad1.rightTriggerWasReleased() || gamepad2.rightTriggerWasReleased()) {
-                bangBang.setPower(0);
+                bangBang.setVelocity(0);
             } else if (gamepad1.rightBumperWasReleased() || gamepad2.rightBumperWasReleased()) {
                 //decrease shoot speed
-                bangBang.setPower(bangBang.getVelocity() + 5);
+                bangBang.setVelocity(bangBang.getVelocity() + 5);
             } else if (gamepad1.leftBumperWasReleased() || gamepad2.leftBumperWasReleased()) {
                 //increase shoot speed
-                bangBang.setPower(bangBang.getVelocity() - 5);
+                bangBang.setVelocity(bangBang.getVelocity() - 5);
             }
         }
         telemetry.addLine("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
@@ -246,25 +249,29 @@ public class BiobuzzTeleMain extends OpMode{
             telemetry.addLine("------------------------------------");
             telemetry.addLine("------------Intake----------------- ");
             telemetry.addLine("      [Y]  ");
-            telemetry.addLine(" [X] Reverse                [B] OFF");
+            telemetry.addLine(" [X] OFF                [B] REVERSE");
             telemetry.addLine("      [A] ON ");
             telemetry.addLine("------------------------------------");
             telemetry.addData("Pick up motor power: ",pickup.getPower());
             telemetry.addData("Spinner motor power: ",-spinner.getPower());
             if(gamepad1.aWasReleased() || gamepad2.aWasReleased()){
                 //intake ON
-                spinner.setPower(-1);
                 pickup.setPower(0.5);
+                spinner.setPower(-1);
                 //flipperUpper.setPower(-0.5);
-            } else if (gamepad1.bWasReleased() || gamepad2.bWasReleased()){
+            } else if (gamepad1.xWasReleased() || gamepad2.xWasReleased()){
                 //intake OFF
                 spinner.setPower(0);
                 pickup.setPower(0);
                 flipperUpper.setPower(0);
-            }else if (gamepad1.xWasReleased() || gamepad2.xWasReleased()){
+            }else if (gamepad1.bWasPressed() || gamepad2.bWasPressed()){
                 // reverse
                 pickup.setPower(-0.5);
                 spinner.setPower(1);
+            }else if (gamepad1.bWasReleased() || gamepad2.bWasReleased()){
+                //back to normal
+                pickup.setPower(0.5);
+                spinner.setPower(-1);
             }
         }
 
@@ -276,8 +283,12 @@ public class BiobuzzTeleMain extends OpMode{
         // up d pad block up
         // down d pad block down
         if (blocker!= null) {
-            if (gamepad2.dpad_up ){//&& bangBang.getVelocity()>=defaultShootVelocity) {
+            if (gamepad2.dpad_up && bangBang.getVelocity()>=(defaultShootVelocity - 50)) {
                 blocker.setPosition(.25);
+                //timer.reset();
+                //if (timer.milliseconds() > 250) {
+                  //  blocker.setPosition(.25);
+             //   }
             } else {
                 blocker.setPosition(.6);
             }
