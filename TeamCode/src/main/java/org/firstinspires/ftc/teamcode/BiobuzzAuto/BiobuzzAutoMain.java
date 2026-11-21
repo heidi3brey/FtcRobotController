@@ -24,10 +24,10 @@ public class BiobuzzAutoMain extends LinearOpMode {
 
     private static final Pose start =
             new Pose(56, 0, Math.toRadians(90));
-    private final Pose point1 = poseFactory.of(56.1,-24 , 90);
+    private final Pose point1 = poseFactory.of(56.1,-24.1 , 90);
     private final Pose point2 = poseFactory.of(55, -24.1, 90);
     private final Pose greenStart = poseFactory.of(8.49, 133.44, 90);
-    private final Pose greenEnd = poseFactory.of(10.81, 150, 90);
+    private final Pose greenEnd = poseFactory.of(8.5, 133.5, 90);
     private  final  Pose offwallstart = poseFactory.of(0,0,90);
 
     private  final  Pose offwallend = poseFactory.of(5,5,90);
@@ -104,8 +104,19 @@ public class BiobuzzAutoMain extends LinearOpMode {
             }
         } else if (robotPath.equals("green")) {
             follower.setPose(greenStart);
+           /* telemetry.addData(
+                    "Before heading",
+                    Math.toDegrees(follower.pose().heading()));
+            telemetry.update();
+            sleep(3000);
+            follower.update();
+            telemetry.addData(
+                    "After heading",
+                    Math.toDegrees(follower.pose().heading()));
+            telemetry.update();
+            sleep(3000);*/
             follower.follow(greenPath());
-            while (opModeIsActive() && follower.isBusy()) {
+            while (opModeIsActive() /*&& follower.isBusy()*/ ) {
                 follower.update();
                 telemetryDebug(); // adds real-time debugging updates here
             }
@@ -145,6 +156,15 @@ public class BiobuzzAutoMain extends LinearOpMode {
             telemetry.addData("X", pose.x());
             telemetry.addData("Y", pose.y());
             telemetry.addData("Heading", pose.heading());
+            if (follower.currentPath() !=null ){
+                telemetry.addData("Current path distance remaining",
+                        follower.distanceToEndpoint());
+                telemetry.addData("Path number",
+                        follower.pathIndex());
+            }
+            telemetry.addData(
+                    "headingDeg",
+                    Math.toDegrees(follower.pose().heading()));
 
             // TODO stuff we want to do in Auto
 

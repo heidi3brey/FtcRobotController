@@ -33,6 +33,8 @@ public class BiobuzzTeleMain extends OpMode{
     private Follower follower;
     private Limelight3A limelight;
     private String alliance = "unknown";
+    public static final Pose start =
+            new Pose(0,0,90);
     public DcMotorEx bangBang;
     public DcMotorEx spinner;
     public DcMotorEx pickup;
@@ -118,6 +120,7 @@ public class BiobuzzTeleMain extends OpMode{
     @Override
     public void start(){
         //limelight.start();
+        bangBang.setVelocity(defaultShootVelocity);
     }
 
     @Override
@@ -283,14 +286,18 @@ public class BiobuzzTeleMain extends OpMode{
         // up d pad block up
         // down d pad block down
         if (blocker!= null) {
-            if (gamepad2.dpad_up && bangBang.getVelocity()>=(defaultShootVelocity - 50)) {
+            if (gamepad2.dpad_up && bangBang.getVelocity()>=(defaultShootVelocity - 30)) {
                 blocker.setPosition(.25);
                 //timer.reset();
                 //if (timer.milliseconds() > 250) {
                   //  blocker.setPosition(.25);
              //   }
+            } else if (gamepad2.dpad_down && bangBang.getVelocity()>=(defaultShootVelocity - 30))  {
+                blocker.setPosition(0.9);
+                follower.setPose(start);
+                follower.hold(start);
             } else {
-                blocker.setPosition(.6);
+                blocker.setPosition(.75);
             }
 
             telemetry.addLine("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
