@@ -23,9 +23,9 @@ public class BiobuzzAutoMain extends LinearOpMode {
     private final PoseFactory poseFactory = PoseFactory.degrees();
 
     private static final Pose start =
-            new Pose(56, 0, Math.toRadians(90));
-    private final Pose point1 = poseFactory.of(56.1,-24.1 , 90);
-    private final Pose point2 = poseFactory.of(55, -24.1, 90);
+            new Pose(60, 8, Math.toRadians(90));
+    private final Pose point1 = poseFactory.of(60,120 , 90);
+    private final Pose point2 = poseFactory.of(16, 120, 90);
     private final Pose greenStart = poseFactory.of(8.49, 133.44, 90);
     private final Pose greenEnd = poseFactory.of(8.5, 133.5, 90);
     private  final  Pose offwallstart = poseFactory.of(0,0,90);
