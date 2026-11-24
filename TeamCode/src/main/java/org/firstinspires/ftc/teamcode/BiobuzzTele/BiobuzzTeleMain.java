@@ -44,6 +44,8 @@ public class BiobuzzTeleMain extends OpMode{
     public double defaultShootPower = -0.85;
     public double defaultShootVelocity = -950;
     private ElapsedTime timer = new ElapsedTime();
+
+    private boolean launchCommandLast;
     @Override
     public void init(){
         // Follower
@@ -286,19 +288,26 @@ public class BiobuzzTeleMain extends OpMode{
         // up d pad block up
         // down d pad block down
         if (blocker!= null) {
-            if (gamepad2.dpad_up && bangBang.getVelocity()>=(defaultShootVelocity - 30)) {
+//            if (timer.milliseconds() > 500 && gamepad2.dpad_up && bangBang.getVelocity()>=(defaultShootVelocity - 30)) {
+//                blocker.setPosition(.25);
+//                timer.reset();
+//                if (timer.milliseconds() > 500) blocker.setPosition(0);
+//                //timer.reset();
+//                //if (timer.milliseconds() > 250) {
+//                  //  blocker.setPosition(.25);
+//             //   }
+//            } else if (gamepad2.dpad_down && bangBang.getVelocity()>=(defaultShootVelocity - 30))  {
+//                blocker.setPosition(0.9);
+//                follower.setPose(start);
+//                follower.hold(start);
+//            } else {
+//                blocker.setPosition(.75);
+//            }
+            if (bangBang.getVelocity()>=(defaultShootVelocity - 30) && gamepad2.dpad_up){
                 blocker.setPosition(.25);
-                //timer.reset();
-                //if (timer.milliseconds() > 250) {
-                  //  blocker.setPosition(.25);
-             //   }
-            } else if (gamepad2.dpad_down && bangBang.getVelocity()>=(defaultShootVelocity - 30))  {
-                blocker.setPosition(0.9);
-                follower.setPose(start);
-                follower.hold(start);
-            } else {
-                blocker.setPosition(.75);
+
             }
+            
 
             telemetry.addLine("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
             telemetry.addLine("------Shot Blocker------------");

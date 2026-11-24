@@ -22,7 +22,7 @@ public class straightDebug extends LinearOpMode {
 
     // GREEN TEST PATH
     private final Pose startPose = poseFactory.of(8.49, 133.44, 90);
-    private final Pose endPose = poseFactory.of(8.50, 133.50, 90);
+    private final Pose endPose = poseFactory.of(15, 133.50, 90);
 
     @Override
     public void runOpMode() {
