@@ -177,6 +177,8 @@ public class BiobuzzAutoMain extends LinearOpMode {
         //save alliance selection to use in teleop
         AutoState.alliance = alliance;
         AutoState.lastPose = follower.pose();
+        AutoState.pos[0] = follower.pose().x();
+        AutoState.pos[1] = follower.pose().y();
 
         telemetry.addData(
                 "Stored X",

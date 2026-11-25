@@ -69,11 +69,11 @@ public class BiobuzzTeleMain extends OpMode{
 
         telemetry.addData(
                 "Stored X",
-                AutoState.lastPose.x());
+                AutoState.pos[0]);
 
         telemetry.addData(
                 "Stored Y",
-                AutoState.lastPose.y());
+                AutoState.pos[1]);
 
         telemetry.addData(
                 "Stored Heading",
